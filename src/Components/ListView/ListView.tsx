@@ -68,7 +68,11 @@ export default function ListView(props: ListViewType) {
                   onClick={() =>
                     props.onPaginate({ offset: i, pageSize: props.pageSize })
                   }
-                  className="btn btn-primary"
+                  className={`btn ${
+                    props.pageNumber === i
+                      ? "btn-primary"
+                      : "btn-outline-primary"
+                  }`}
                 >
                   {i + 1}
                 </button>
