@@ -12,14 +12,15 @@ export default function Courses() {
     totalElements: 0,
     pages: 0,
     content: null,
-    pageSize: 0,
+    pageSize: 1,
     pageNumber: 0,
   });
   const [trendingCourse, setTrendingCourse] = useState<Array<Card>>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const container = useRef(null);
   useEffect(() => {
-    getAllCourses(0, 10);
+    getAllCourses(course.pageNumber, course.pageSize);
     fetchTrendingCourse().then((data: any) => {
       let trendingCourses = new Array<Card>();
       for (let course of data) {
@@ -36,27 +37,32 @@ export default function Courses() {
     });
   }, []);
   const getAllCourses = (offset: Number, pageSize: Number) => {
-    fetchCourse("", offset, pageSize).then((data: any) => {
-      let courses = new Array<ListItem>();
-      for (let course of data.content) {
-        courses.push({
-          id: course.id,
-          head: course.name,
-          subhead: course.description,
-          image: course.thumbnail,
-          stars: course.rating,
-          right: `Rs. ${course.price}`,
-          badges: [],
+    setLoading(true);
+    fetchCourse("", offset, pageSize)
+      .then((data: any) => {
+        let courses = new Array<ListItem>();
+        for (let course of data.content) {
+          courses.push({
+            id: course.id,
+            head: course.name,
+            subhead: course.description,
+            image: course.thumbnail,
+            stars: course.rating,
+            right: `Rs. ${course.price}`,
+            badges: [],
+          });
+        }
+        setCourse({
+          totalElements: data.totalElements,
+          pages: data.totalPages,
+          content: courses,
+          pageSize: data.size,
+          pageNumber: data.number,
         });
-      }
-      setCourse({
-        totalElements: data.totalElements,
-        pages: data.totalPages,
-        content: courses,
-        pageSize: data.size,
-        pageNumber: data.number,
+      })
+      .finally(() => {
+        setLoading(false);
       });
-    });
   };
   const onPaginate = (page: Page) => {
     getAllCourses(page.offset, page.pageSize);
@@ -210,20 +216,40 @@ export default function Courses() {
           </div>
         </button>
       </div>
-      <div style={{ padding: "20px 0" }}>
-        <ListView
-          btnText={"See More"}
-          btnAction={(item: ListItem) => {
-            navigate(`/description/${item.id}`);
+      {!loading && (
+        <div style={{ padding: "20px 0" }}>
+          <ListView
+            btnText={"See More"}
+            btnAction={(item: ListItem) => {
+              navigate(`/description/${item.id}`);
+            }}
+            onPaginate={onPaginate}
+            totalElements={course?.totalElements}
+            pages={course?.pages}
+            content={course?.content?.length > 0 ? course?.content : []}
+            pageSize={course?.pageSize}
+            pageNumber={course?.pageNumber}
+          />
+        </div>
+      )}
+      {loading && (
+        <div
+          style={{
+            height: "200px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
-          onPaginate={onPaginate}
-          totalElements={course?.totalElements}
-          pages={course?.pages}
-          content={course?.content?.length > 0 ? course?.content : []}
-          pageSize={course?.pageSize}
-          pageNumber={course?.pageNumber}
-        />
-      </div>
+        >
+          <div
+            style={{ width: "5rem", height: "5rem" }}
+            className="spinner-border"
+            role="status"
+          >
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

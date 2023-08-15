@@ -59,7 +59,7 @@ export default function ListView(props: ListViewType) {
           return temp;
         })()}
       {props.pages > 0 && (
-        <div className="row justify-content-end p-2">
+        <div style={{ gap: 10 }} className="row justify-content-end p-2">
           {(() => {
             let paginationButtons = [];
             for (let i = 0; i < props.pages; i++) {
