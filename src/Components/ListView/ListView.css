@@ -1,0 +1,30 @@
+.thumbnail {
+  object-fit: cover;
+  object-position: center;
+}
+@media only screen and (max-width: 400px) {
+  .thumbnail {
+    max-width: 160px;
+  }
+}
+@media only screen and (min-width: 400px) {
+  .thumbnail {
+    max-width: 300px;
+  }
+}
+.list-block {
+  padding: 10px 0;
+  border-bottom: 1px solid #bbb;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+.list-block .content {
+  padding: 0 20px;
+}
+.list-block .badge {
+  font-size: 17px;
+}
+.list-block .rating {
+  width: 17px;
+}
