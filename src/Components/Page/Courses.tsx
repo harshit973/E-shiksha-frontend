@@ -1,26 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import ListView from "../ListView/ListView.tsx";
-import { ListItem } from "../../types/ListItem.ts";
-import { useNavigate, useParams } from "react-router-dom";
-import { Card } from "../../types/Card.ts";
-import { fetchCourse } from "../ApiHandler/fetchCourse.ts";
+import { ListItem } from "../../Utill/types/ListItem.ts";
+import { useNavigate } from "react-router-dom";
+import { Card } from "../../Utill/types/Card.ts";
 import { fetchTrendingCourse } from "../ApiHandler/fetchTrendingCourse.ts";
-import { ListView as ListViewType } from "../../types/ListView.ts";
-import { Page } from "../../types/Page.ts";
+import { Page } from "../../Utill/types/Page.ts";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCourse } from "../ApiHandler/fetchCourse.ts";
+import { setCourse } from "../../Utill/Store/Slices/CourseSlice.js";
 export default function Courses() {
-  const [course, setCourse] = useState<ListViewType>({
-    totalElements: 0,
-    pages: 0,
-    content: null,
-    pageSize: 1,
-    pageNumber: 0,
-  });
+  const course:any = useSelector((state:any) => state.courseSlice);
+  const dispatch = useDispatch();
   const [trendingCourse, setTrendingCourse] = useState<Array<Card>>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const container = useRef(null);
   useEffect(() => {
-    getAllCourses(course.pageNumber, course.pageSize);
+    getAllCourses(course?.pageNumber, course?.pageSize);
     fetchTrendingCourse().then((data: any) => {
       let trendingCourses = new Array<Card>();
       for (let course of data) {
@@ -40,25 +36,7 @@ export default function Courses() {
     setLoading(true);
     fetchCourse("", offset, pageSize)
       .then((data: any) => {
-        let courses = new Array<ListItem>();
-        for (let course of data.content) {
-          courses.push({
-            id: course.id,
-            head: course.name,
-            subhead: course.description,
-            image: course.thumbnail,
-            stars: course.rating,
-            right: `Rs. ${course.price}`,
-            badges: [],
-          });
-        }
-        setCourse({
-          totalElements: data.totalElements,
-          pages: data.totalPages,
-          content: courses,
-          pageSize: data.size,
-          pageNumber: data.number,
-        });
+        dispatch(setCourse(data));
       })
       .finally(() => {
         setLoading(false);

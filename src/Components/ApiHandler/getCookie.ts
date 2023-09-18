@@ -1,4 +1,4 @@
-import { COOKIE } from "../Constants";
+import { COOKIE } from "../../Utill/Constants";
 
 export default function getCookie(cname: string = COOKIE.KEY) {
   let name = cname + "=";

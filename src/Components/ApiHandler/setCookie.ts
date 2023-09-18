@@ -1,4 +1,4 @@
-import { COOKIE } from "../Constants";
+import { COOKIE } from "../../Utill/Constants";
 
 export default function setCookie(
   cname: string = COOKIE.KEY,

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { ListItem } from "../../types/ListItem";
+import { ListItem } from "../../Utill/types/ListItem";
 import "./ListView.css";
-import { ListView as ListViewType } from "../../types/ListView";
+import { ListView as ListViewType } from "../../Utill/types/ListView";
 export default function ListView(props: ListViewType) {
   const [items, setItems] = useState<Array<ListItem>>([]);
   useEffect(() => {

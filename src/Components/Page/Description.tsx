@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Course } from "../../types/Course.js";
+import { Course } from "../../Utill/types/Course.js";
 import ListView from "../ListView/ListView.js";
-import { ListItem } from "../../types/ListItem.js";
+import { ListItem } from "../../Utill/types/ListItem.js";
 import { useNavigate } from "react-router-dom";
 
 export default function Description() {
