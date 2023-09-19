@@ -2,10 +2,10 @@ export const Course = {
   index: "/course",
 };
 export const Pricing = {
-  index: "/",
+  index: "/pricing",
 };
 export const About = {
-  index: "/",
+  index: "/about",
 };
 export const Home = {
   index: "/",

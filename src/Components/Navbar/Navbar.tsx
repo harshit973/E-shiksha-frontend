@@ -1,6 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import { About, Course, Home, Pricing } from "../../URL.ts";
-import { FormEvent, FormEventHandler, useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
+
+const initialTabState = {
+  Home: '',
+  Course: '',
+  Pricing: '',
+  About: ''
+}
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -8,7 +15,30 @@ export default function Navbar() {
     e.preventDefault();
     navigate(`/course?search=${e.target[0].value}`);
   };
-
+  const [tab,setTab] = useState<any>(initialTabState);
+  useEffect(()=>{
+    if(window.location.pathname.startsWith(Pricing.index)){
+      setTab({
+        ...initialTabState,
+        Pricing:'active'
+      })
+    }else if(window.location.pathname.startsWith(Course.index)){
+      setTab({
+        ...initialTabState,
+        Course:'active'
+      })
+    }else if(window.location.pathname.startsWith(About.index)){
+      setTab({
+        ...initialTabState,
+        About:'active'
+      })
+    }else{
+      setTab({
+        ...initialTabState,
+        Home:'active'
+      })
+    }
+  },[])
   return (
     <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
       <a className="navbar-brand" href="#">
@@ -27,22 +57,22 @@ export default function Navbar() {
       </button>
       <div className="collapse navbar-collapse" id="navbarColor02">
         <ul className="navbar-nav mr-auto">
-          <li className="nav-item active">
+          <li onClick={()=>{setTab({...initialTabState,Home:'active'})}} className={`nav-item ${tab.Home}`}>
             <Link className="nav-link" to={Home.index}>
               Home
             </Link>
           </li>
-          <li className="nav-item">
+          <li onClick={()=>{setTab({...initialTabState,Course:'active'})}} className={`nav-item ${tab.Course}`}>
             <Link className="nav-link" to={Course.index}>
               Courses
             </Link>
           </li>
-          <li className="nav-item">
+          <li onClick={()=>{setTab({...initialTabState,Pricing:'active'})}} className={`nav-item ${tab.Pricing}`}>
             <Link className="nav-link" to={Pricing.index}>
               Pricing
             </Link>
           </li>
-          <li className="nav-item">
+          <li onClick={()=>{setTab({...initialTabState,About:'active'})}} className={`nav-item ${tab.About}`}>
             <Link className="nav-link" to={About.index}>
               About
             </Link>

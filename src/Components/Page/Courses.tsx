@@ -7,29 +7,18 @@ import { fetchTrendingCourse } from "../ApiHandler/fetchTrendingCourse.ts";
 import { Page } from "../../Utill/types/Page.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCourse } from "../ApiHandler/fetchCourse.ts";
-import { setCourse } from "../../Utill/Store/Slices/CourseSlice.js";
+import { setCourse, setTrendingCourse } from "../../Utill/Store/Slices/CourseSlice.js";
 export default function Courses() {
-  const course:any = useSelector((state:any) => state.courseSlice);
+  const course:any = useSelector((state:any) => state.courseSlice.course);
+  const trendingCourse:Array<Card> = useSelector((state:any) => state.courseSlice.trendingCourse);
   const dispatch = useDispatch();
-  const [trendingCourse, setTrendingCourse] = useState<Array<Card>>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const container = useRef(null);
   useEffect(() => {
     getAllCourses(course?.pageNumber, course?.pageSize);
     fetchTrendingCourse().then((data: any) => {
-      let trendingCourses = new Array<Card>();
-      for (let course of data) {
-        trendingCourses.push({
-          id: course.id,
-          name: course.name,
-          description: course.description,
-          thumbnail: course.thumbnail,
-          rating: course.rating,
-          price: `Rs. ${course.price}`,
-        });
-      }
-      setTrendingCourse(trendingCourses);
+      dispatch(setTrendingCourse(data));
     });
   }, []);
   const getAllCourses = (offset: Number, pageSize: Number) => {

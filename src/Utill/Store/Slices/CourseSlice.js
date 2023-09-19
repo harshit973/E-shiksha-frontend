@@ -23,7 +23,20 @@ const processCourse = (data) =>{
     pageNumber: data.number,
   }
 }
-
+const processTrendingCourse = (data) =>{
+  let trendingCourses = []
+  for (let course of data) {
+    trendingCourses.push({
+      id: course.id,
+      name: course.name,
+      description: course.description,
+      thumbnail: course.thumbnail,
+      rating: course.rating,
+      price: `Rs. ${course.price}`,
+    });
+  }
+  return trendingCourses;
+}
 export const CourseSlice = createSlice({
   name: SLICE_NAMES.COURSE_SLICE,
   initialState: courseInitialState,
@@ -32,12 +45,23 @@ export const CourseSlice = createSlice({
       const processedCourse = processCourse(action.payload);
       return {
         ...state,
-        ...processedCourse
+        course:{
+          ...processedCourse
+        }
+      }
+    },
+    setTrendingCourse: (state,action) => {
+      const processedCourse = processTrendingCourse(action.payload);
+      return {
+        ...state,
+        trendingCourse: [
+          ...processedCourse
+        ]
       }
     }
   }
 })
 
-export const {setCourse} = CourseSlice.actions;
+export const {setCourse,setTrendingCourse} = CourseSlice.actions;
 
 export default CourseSlice.reducer;
