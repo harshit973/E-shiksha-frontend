@@ -12,7 +12,7 @@ export function fetchCourse(
       url:
         process.env.REACT_APP_BASE_COURSE_URL +
         `v1/course?pageNumber=${pageNumber ? pageNumber : 0}&pageSize=${
-          pageSize ? pageSize : 10
+          pageSize ? pageSize : 5
         }${search ? "&" + search : ""}`,
       headers: {
         "Content-Type": "application/json",

@@ -41,7 +41,7 @@ export default function Navbar() {
   },[])
   return (
     <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
-      <a className="navbar-brand" href="#">
+      <a className="navbar-brand" href="/">
         {process.env.REACT_APP_NAME}
       </a>
       <button
