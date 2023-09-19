@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { SLICE_NAMES } from '../../Constants'
 import { courseInitialState } from "../../InitialState/CourseInitialState"
-import { fetchCourseThunk } from '../Thunks/GetCourseByPageThunk';
 
 const processCourse = (data) =>{
   const courses = [];
@@ -36,13 +35,6 @@ export const CourseSlice = createSlice({
         ...processedCourse
       }
     }
-  },
-  extraReducers: (builder) => {
-    builder.addCase(fetchCourseThunk.fulfilled, (state, action) => {
-      const processedCourse = processCourse(action.payload);
-      state = {...state,...processedCourse,loaded:true}
-      return state
-    })
   }
 })
 
